@@ -11,14 +11,18 @@ add_action('wp_body_open', 'tb_head');
 
 function get_user_or_websitename()
 {
-    if( !is_user_logged_in() ) {
-
-        return 'to ' . get_bloginfo('name');
+    if( !is_user_logged_in() ) 
+    {
+        if( get_option('topbar_field')) {
+         return 'Welcome to ' . get_option('ntopbar_field');
+        } else {
+            return 'Welcome to ' . get_bloginfo('name');
+        }
     }
     else
     {
-        $current_user = xp_get_current_user();
-        return $current_user -> user_login; 
+        $current_user = wp_get_current_user();
+        return 'Welcome back ' . $current_user -> user_login; 
     }
 }
 
@@ -74,3 +78,16 @@ function topbar_page_html(){ ?>
     </div>
 
 <?php }
+
+add_action('admin_head', 'topbarstyle');
+
+function topbarstyle() {
+    echo '<style>
+    .top-bar-wrapper {display: flex; align-items: center;justify-content: center;margin-top:35px}
+    .top-bar-wrapper form {width: 100%; max-width: 800px;}
+    .top-bar-wrapper label {font-size: 3em; display: block; line-height:normal; margin-bottom: 30px;font-weigth:bold}
+    .top-bar-wrapper input {color:#666;width: 100%; padding: 30px; font-size: 3em}
+    .top-bar-wrapper .button {font-size: 2em; text-transform: uppercase; background: rgba(59,173,227,1);
+        background: linear-gradient(45deg, rgba(59,173,227,1) 0%, rgba(87,111,230,1) 25%, rgba(152,68,183,1) 51%, rgba(255,53,127,1) 100%);border:none}
+    </style>';
+}
